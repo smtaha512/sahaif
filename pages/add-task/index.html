@@ -1,12 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sahaif | Add a new task</title>
-</head>
-<body>
-  <h1>Welcome to Sahaif</h1>
-  <h2>Keep your records, simplify your day.</h2>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#2c3e50">
+    <link rel="manifest" href="../../manifest.json">
+    <link rel="icon" href="../../assets/icon-192x192.png" sizes="192x192">
+    <link rel="apple-touch-icon" href="../../assets/icon-512x512.png">
+    <title>Sahaif | Add a new task</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/flatly/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="../../shared/styles/alert.styles.css">
+  </head>
+  <body class="h-100">
+    <div id="alert-container" class="position-fixed float-sm-end mt-2 me-2 w-100 px-2" style="z-index: 1050"></div>
+    <div class="overflow-hidden d-flex flex-column align-items-center justify-content-center w-100 h-100">
+      <nav id="top-nav" class="fixed-top w-100 navbar navbar-expand-lg bg-primary shadow-lg" data-bs-theme="dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Add a new task</a>
+        </div>
+      </nav>
+      <!-- Main Content -->
+      <main class="container d-flex justify-content-center align-items-center">
+        <form id="add-task" class="d-flex justify-content-center flex-column align-items-center">
+          <!-- Task Name Input -->
+          <div class="w-100 text-center mb-4">
+            <label for="name" class="form-label">Task Name</label>
+            <input type="text" name="name" id="name" class="form-control mx-auto highlight" style="max-width: 300px" list="taskSuggestions" placeholder="Enter task name or pick one" />
+            <datalist id="taskSuggestions"></datalist>
+          </div>
+    
+          <!-- Start Date and Time Input Group -->
+          <div class="w-100 text-center mb-4">
+            <label class="form-label">Start Date and Time</label>
+            <div class="input-group mx-auto" style="max-width: 300px">
+              <input type="date" name="start-date" id="start-date" class="form-control highlight" aria-label="Start Date" />
+              <input type="time" name="start-time" id="start-Time" class="form-control highlight" aria-label="Start Time" />
+            </div>
+          </div>
+    
+          <!-- End Date and Time Input Group -->
+          <div class="w-100 text-center mb-4">
+            <label class="form-label">End Date and Time</label>
+            <div class="input-group mx-auto" style="max-width: 300px">
+              <input type="date" name="end-date" id="end-date" class="form-control highlight" aria-label="End Date" />
+              <input type="time" name="end-time" id="end-time" class="form-control highlight" aria-label="End Time" />
+            </div>
+          </div>
+    
+          <!-- Add Task Button -->
+          <button type="button" id="add-task-button" class="btn btn-primary mt-4">Add Task</button>
+        </form>
+      </main>
+  
+      <!-- Bottom Navigation Bar -->
+      <nav id="bottom-nav" class="fixed-bottom shadow-lg border py-0 bg-primary" data-bs-theme="dark">
+        <div class="nav-wrapper pb-0 d-flex justify-content-center">
+          <ul class="nav nav-pills w-100 justify-content-center py-2">
+            <!-- Add Task Menu Item -->
+            <li class="nav-item mx-2">
+              <a class="d-flex flex-column align-items-center nav-link py-1 px-5 active" href="#">
+                <i class="bi bi-plus-circle fs-6"></i>
+                <span>Add Task</span>
+              </a>
+            </li>
+  
+            <!-- History Menu Item -->
+            <li class="nav-item mx-2">
+              <a class="d-flex flex-column align-items-center nav-link py-1 px-5" href="#">
+                <i class="bi bi-clock-history fs-6"></i>
+                <span>History</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- date-fns -->
+    <script src="https://cdn.jsdelivr.net/npm/date-fns@4.1.0/cdn.min.js" integrity="sha256-bDgRIzo3i6VHqJMlDwUcu/g1mnxCoS6B1sNW3269kJY=" crossorigin="anonymous"></script>
+    <!-- Lodash -->
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js" integrity="sha256-qXBd/EfAdjOA2FGrGAG+b3YBn2tn5A6bhz+LSgYD96k=" crossorigin="anonymous"></script>
+    <!-- Dexie.js -->
+    <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
+    <!-- UUID -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.2.0/uuid.min.js" integrity="sha512-X0CJvcClD8EXFn5Oq8BD5lIsznKDfxb0Sf9Wr8MCCTyAEWaAAxr0Jvm3qyofsmN7eSHMZ0PPQGjVKroLAfexrA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!--  Controller -->
+    <script src="./app/controllers/add-new-task.controller.mjs" type="module"></script>
+  </body>
 </html>

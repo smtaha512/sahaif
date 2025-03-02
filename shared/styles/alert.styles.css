@@ -1,0 +1,13 @@
+@media (min-width: 768px) {
+  #alertContainer {
+    right: 0;
+    width: auto; /* Automatically adjust width */
+    max-width: clamp(200px, 25vw, 800px); /* Limit the alert width */
+    top: var(--top-nav-height);
+  }
+}
+@media (max-width: 768px) { 
+  #alertContainer {
+    bottom: var(--bottom-nav-height);
+  }
+}

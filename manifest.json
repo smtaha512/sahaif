@@ -1,0 +1,20 @@
+{
+  "name": "Sahaif",
+  "short_name": "Sahaif",
+  "start_url": "/pages/add-task",
+  "display": "standalone",
+  "background_color": "#2c3e50",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/assets/icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/assets/icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
