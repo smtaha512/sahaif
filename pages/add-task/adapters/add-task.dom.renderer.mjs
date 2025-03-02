@@ -156,7 +156,7 @@ export class AddTaskDomRenderer extends AddTaskRendererPort {
   /**
    * Extracts and structures task data from the form fields into a DTO.
    * @param {HTMLFormElement} form
-   * @returns {TaskDTO} The task data transfer object.
+   * @returns {AddNewTaskInputDTO} The task data transfer object.
    */
   #getTaskDTOFromForm(form) {
     const formData = new FormData(form);
