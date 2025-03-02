@@ -26,7 +26,7 @@ export class AddNewTaskInputValidator {
     const startedAt = convertDateAndTimeToJSDate(startDate, startTime);
     const endedAt = convertDateAndTimeToJSDate(endDate, endTime);
 
-    if (startedAt < endedAt) {
+    if (dateFns.isBefore(endedAt, startedAt)) {
       throw new EndDateTimeBeforeStartDateTimeError();
     }
   }
