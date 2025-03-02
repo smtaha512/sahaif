@@ -1,11 +1,14 @@
 import { AddNewTaskInputDTO } from "./add-new-task.input.dto.mjs";
 
 export class AddNewTaskUseCase {
+  /** @type {TaskRepository} */
+  #taskRepository;
+
   /**
    * @param {TaskRepository} taskRepository
    */
   constructor(taskRepository) {
-    this.taskRepository = taskRepository;
+    this.#taskRepository = taskRepository;
   }
 
   /**
@@ -16,6 +19,6 @@ export class AddNewTaskUseCase {
   async execute(taskDTO) {
     const newTask = taskDTO.toTaskEntity();
 
-    await this.taskRepository.insert(newTask);
+    await this.#taskRepository.insert(newTask);
   }
 }

@@ -1,6 +1,6 @@
 import { convertDateAndTimeToJSDate } from "../../../../../shared/utils/date.utils.mjs";
 import { EndDateTimeBeforeStartDateTimeError } from "./errors/end-date-time-before-start-date-time.error.mjs";
-import { MissingTasksDataError } from "./errors/missing-task-data.error.mjs";
+import { MissingTaskDataError } from "./errors/missing-task-data.error.mjs";
 
 export class AddNewTaskInputValidator {
   /**
@@ -9,7 +9,7 @@ export class AddNewTaskInputValidator {
    *
    * @typedef {import('./add-new-task.input.dto.mjs').AddNewTaskInputDTO} AddNewTaskInputDTO
    * @param {AddNewTaskInputDTO} task - The task object to validate.
-   * @throws {MissingTasksDataError} If any required field is missing in the task.
+   * @throws {MissingTaskDataError} If any required field is missing in the task.
    * @throws {EndDateTimeBeforeStartDateTimeError} If the end date/time is earlier than the start date/time.
    */
   static validate(task) {
@@ -18,7 +18,7 @@ export class AddNewTaskInputValidator {
       .map(([key]) => key);
 
     if (missingFields.length > 0) {
-      throw new MissingTasksDataError(missingFields);
+      throw new MissingTaskDataError(missingFields);
     }
 
     const { startDate, startTime, endDate, endTime } = task;

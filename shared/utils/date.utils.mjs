@@ -6,8 +6,7 @@
  * @returns {Date} The corresponding JavaScript Date object.
  */
 export function convertDateAndTimeToJSDate(datePart, timePart) {
-  console.log({ datePart, timePart });
   const combinedDateTime = `${datePart}T${timePart}`;
 
-  return parse(combinedDateTime, "yyyy-MM-dd'T'HH:mm", new Date());
+  return dateFns.parse(combinedDateTime, "yyyy-MM-dd'T'HH:mm", new Date());
 }

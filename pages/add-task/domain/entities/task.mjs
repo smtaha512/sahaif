@@ -13,6 +13,13 @@ export class Task {
   /** @type {Date} */
   endedAt = "";
 
+  constructor({ id, name, startedAt, endedAt } = {}) {
+    this.id = id;
+    this.name = name;
+    this.startedAt = startedAt;
+    this.endedAt = endedAt;
+  }
+
   /**
    * Calculates the duration of the task in milliseconds.
    * Returns 0 if either the start or end time is not set.

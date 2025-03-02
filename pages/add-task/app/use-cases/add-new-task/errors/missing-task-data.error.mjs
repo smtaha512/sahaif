@@ -1,4 +1,4 @@
-export class MissingTasksDataError extends Error {
+export class MissingTaskDataError extends Error {
   /**
    * @param {string[]} missingFields - An array of the names of the missing fields.
    */

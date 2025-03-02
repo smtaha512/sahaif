@@ -12,13 +12,17 @@ export class AddNewTaskInputDTO {
    * @param {string} params.endTime - The end time of the task in HH:mm format.
    */
   constructor({ name, startDate, startTime, endDate, endTime }) {
-    AddNewTaskInputValidator.validate({ name, startDate, startTime, endDate, endTime });
-
     this.name = name;
     this.startDate = startDate;
     this.startTime = startTime;
     this.endDate = endDate;
     this.endTime = endTime;
+  }
+
+  static build({ name, startDate, startTime, endDate, endTime }) {
+    AddNewTaskInputValidator.validate({ name, startDate, startTime, endDate, endTime });
+
+    return new AddNewTaskInputDTO({ name, startDate, startTime, endDate, endTime });
   }
 
   /**
