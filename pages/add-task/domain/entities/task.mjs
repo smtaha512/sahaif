@@ -8,10 +8,10 @@ export class Task {
   name = null;
 
   /** @type {Date} */
-  startedAt = "";
+  startedAt = null;
 
   /** @type {Date} */
-  endedAt = "";
+  endedAt = null;
 
   constructor({ id, name, startedAt, endedAt } = {}) {
     this.id = id;
