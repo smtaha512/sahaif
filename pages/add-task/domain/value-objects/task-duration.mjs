@@ -1,6 +1,6 @@
 import { NegativeDurationError } from "../errors/duration-can-not-be-negative.error.mjs";
 import { InvalidDateObjectError } from "../errors/invalid-date-object.error.mjs";
-import { StartedAtMustBeEarlierThanEndedAtError } from "../errors/started-at-must-be-earlier-than-ended-at.error.mjs";
+import { StartedAtMustBeEarlierThanOrEqualToEndedAtError } from "../errors/started-at-must-be-earlier-than-ended-at.error.mjs";
 
 export class TaskDuration {
   /** @type {number} */
@@ -16,7 +16,7 @@ export class TaskDuration {
     if (durationInMilliseconds < 0) {
       throw new NegativeDurationError(durationInMilliseconds);
     }
-    this.durationInMilliseconds = durationInMilliseconds;
+    this.#durationInMilliseconds = durationInMilliseconds;
   }
 
   get durationInMilliseconds() {
