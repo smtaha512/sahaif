@@ -1,4 +1,5 @@
 / /pages/add-task/index.html 200
 
 /add-task /pages/add-task/index.html 200
-/add-task/* /pages/add-task/* 200
+/add-task/* /pages/add-task/:splat 200
+
