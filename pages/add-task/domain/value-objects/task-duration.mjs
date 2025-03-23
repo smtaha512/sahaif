@@ -34,7 +34,7 @@ export class TaskDuration {
 
     if (!(endedAt instanceof Date)) throw new InvalidDateObjectError("endedAt");
 
-    if (startedAt >= endedAt) throw new StartedAtMustBeEarlierThanEndedAtError(startedAt, endedAt);
+    if (startedAt > endedAt) throw new StartedAtMustBeEarlierThanOrEqualToEndedAtError(startedAt, endedAt);
 
     const durationInMilliseconds = endedAt - startedAt;
     return new TaskDuration(durationInMilliseconds);
