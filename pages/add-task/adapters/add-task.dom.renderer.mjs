@@ -14,9 +14,27 @@ import { CannotFindElementError } from "./errors/cannot-find-element.error.mjs";
 export class AddTaskDomRenderer extends AddTaskRendererPort {
   /**
    * @private
+   * @readonly
+   * @typedef {import("../app/use-cases/add-new-task/add-new-task.use-case.mjs").AddNewTaskUseCase} AddNewTaskUseCase
    * @type {AddNewTaskUseCase}
    **/
   #addNewTaskUseCase = null;
+
+  /**
+   * @private
+   * @readonly
+   * @typedef {import("../app/use-cases/load-draft-task.use-case/load-draft-task.use-case.mjs").LoadDraftTaskUseCase} LoadDraftTaskUseCase
+   * @type {LoadDraftTaskUseCase}
+   **/
+  #loadDraftTaskUseCase = null;
+
+  /**
+   * @private
+   * @readonly
+   * @typedef {import("../app/use-cases/save-draft-task.use-case/save-draft-task.use-case.mjs").SaveDraftTaskUseCase} SaveDraftTaskUseCase
+   * @type {SaveDraftTaskUseCase}
+   **/
+  #saveDraftTaskUseCase = null;
 
   /**
    * @private
@@ -27,22 +45,63 @@ export class AddTaskDomRenderer extends AddTaskRendererPort {
 
   /**
    * @param {AddNewTaskUseCase} addNewTaskUseCase
+   * @param {DraftTaskRepository} draftTaskRepository
    */
-  constructor(addNewTaskUseCase) {
+  constructor(addNewTaskUseCase, loadDraftTaskUseCase, saveDraftTaskUseCase) {
     super();
     this.#addNewTaskUseCase = addNewTaskUseCase;
+    this.#loadDraftTaskUseCase = loadDraftTaskUseCase;
+    this.#saveDraftTaskUseCase = saveDraftTaskUseCase;
     this.#initializeForm();
   }
 
   #initializeForm() {
     this.#setDefaultStartDateTime();
     this.#setDefaultEndDateTime();
+    this.#loadDraftTask();
+    this.#saveDraftTaskOnInputBlur();
 
     const self = this;
 
     document.getElementById("add-task-button").addEventListener("click", async function onButtonClick() {
       const taskDTO = self.#getTaskDTOFromForm(self.#getForm());
       await self.#handleAddTask(taskDTO);
+    });
+  }
+
+  /**
+   * Loads a draft task into the form fields if a task is provided.
+   *
+   * @private
+   * @async
+   */
+  async #loadDraftTask() {
+    const form = this.#getForm();
+
+    const fields = await this.#loadDraftTaskUseCase.execute();
+
+    // Loop through the fields and populate the form values
+    Object.entries(fields).forEach(([fieldId, fieldValue]) => {
+      const field = form.querySelector(`#${fieldId}`);
+
+      if (!field || !fieldValue) {
+        return;
+      }
+
+      field.value = fieldValue;
+    });
+  }
+
+  async #saveDraftTaskOnInputBlur() {
+    const form = this.#getForm();
+
+    const inputs = form.querySelectorAll("input");
+
+    inputs.forEach((input) => {
+      input.addEventListener("blur", () => {
+        const taskDTO = this.#getTaskDTOFromForm(form);
+        this.#saveDraftTaskUseCase.execute(taskDTO);
+      });
     });
   }
 
