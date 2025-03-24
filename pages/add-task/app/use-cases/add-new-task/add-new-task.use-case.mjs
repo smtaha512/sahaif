@@ -1,14 +1,20 @@
+import { DraftTaskRepository } from "../../../ports/draft-task.repository.port.mjs";
 import { AddNewTaskInputDTO } from "./add-new-task.input.dto.mjs";
 
 export class AddNewTaskUseCase {
   /** @type {TaskRepository} */
   #taskRepository;
 
+  /** @type {DraftTaskRepository} */
+  #draftTaskRepository;
+
   /**
    * @param {TaskRepository} taskRepository
+   * @param {DraftTaskRepository} draftTaskRepository
    */
-  constructor(taskRepository) {
+  constructor(taskRepository, draftTaskRepository) {
     this.#taskRepository = taskRepository;
+    this.#draftTaskRepository = draftTaskRepository;
   }
 
   /**
@@ -20,5 +26,6 @@ export class AddNewTaskUseCase {
     const newTask = taskDTO.toTaskEntity();
 
     await this.#taskRepository.insert(newTask);
+    await this.#draftTaskRepository.delete();
   }
 }

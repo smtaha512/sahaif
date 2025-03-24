@@ -11,7 +11,6 @@ export class TasksDexieRepository extends TaskRepository {
 
   /**
    * @param {TasksDatabase} datasource
-   * @param {string} [store="tasks"]
    */
   constructor(datasource) {
     super();
