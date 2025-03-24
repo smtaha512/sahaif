@@ -1,0 +1,15 @@
+[[redirects]]
+  from = "/"
+  to = "/pages/add-task/index.html"
+  status = 200
+
+
+[[redirects]]
+  from = "/add-task/*"
+  to = "/pages/add-task/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/pages/add-task/:splat"
+  status = 200
