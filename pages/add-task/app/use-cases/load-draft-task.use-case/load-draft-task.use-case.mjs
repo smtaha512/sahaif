@@ -13,7 +13,13 @@ export class LoadDraftTaskUseCase {
     const draftTask = await this.#draftTaskRepository.find();
 
     if (!draftTask) {
-      return;
+      return {
+        ["name"]: "",
+        ["start-date"]: "",
+        ["start-time"]: "",
+        ["end-date"]: "",
+        ["end-time"]: "",
+      };
     }
 
     const formatDate = (date) => (date ? dateFns.format(new Date(date), "yyyy-MM-dd") : "");
