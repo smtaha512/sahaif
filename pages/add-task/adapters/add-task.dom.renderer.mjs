@@ -39,6 +39,14 @@ export class AddTaskDomRenderer extends AddTaskRendererPort {
   /**
    * @private
    * @readonly
+   * @typedef {import("../ports/task-names.repository.port.mjs").TaskNamesRepository} TaskNamesRepository
+   * @type {TaskNamesRepository}
+   **/
+  #taskNamesRepository = null;
+
+  /**
+   * @private
+   * @readonly
    * @type {"add-task"}
    **/
   #formId = "add-task";
@@ -47,11 +55,12 @@ export class AddTaskDomRenderer extends AddTaskRendererPort {
    * @param {AddNewTaskUseCase} addNewTaskUseCase
    * @param {DraftTaskRepository} draftTaskRepository
    */
-  constructor(addNewTaskUseCase, loadDraftTaskUseCase, saveDraftTaskUseCase) {
+  constructor(addNewTaskUseCase, loadDraftTaskUseCase, saveDraftTaskUseCase, taskNamesRepository) {
     super();
     this.#addNewTaskUseCase = addNewTaskUseCase;
     this.#loadDraftTaskUseCase = loadDraftTaskUseCase;
     this.#saveDraftTaskUseCase = saveDraftTaskUseCase;
+    this.#taskNamesRepository = taskNamesRepository;
     this.#initializeForm();
   }
 
@@ -60,6 +69,7 @@ export class AddTaskDomRenderer extends AddTaskRendererPort {
     this.#setDefaultEndDateTime();
     this.#loadDraftTask();
     this.#saveDraftTaskOnInputBlur();
+    this.#populateTaskSuggestions();
 
     const self = this;
 
@@ -67,6 +77,8 @@ export class AddTaskDomRenderer extends AddTaskRendererPort {
       const taskDTO = self.#getTaskDTOFromForm(self.#getForm());
       await self.#handleAddTask(taskDTO);
     });
+
+    document.getElementById("");
   }
 
   /**
@@ -113,9 +125,36 @@ export class AddTaskDomRenderer extends AddTaskRendererPort {
 
       this.#notifySuccess();
       this.#clearFormFields();
+      await this.#populateTaskSuggestions();
     } catch (error) {
       this.handleError(error);
     }
+  }
+
+  async #populateTaskSuggestions() {
+    const suggestions = await this.#taskNamesRepository.findAllSorted();
+
+    if (!Array.isArray(suggestions) || suggestions?.length === 0) {
+      return;
+    }
+
+    // Populate the task suggestions
+    const suggestionsContainer = document.getElementById("task-suggestions");
+    if (!suggestionsContainer) {
+      throw new CannotFindElementError("task-suggestions");
+    }
+
+    suggestionsContainer.innerHTML = ""; // Clear previous suggestions
+    const fragment = document.createDocumentFragment();
+
+    suggestions.forEach((name) => {
+      const option = document.createElement("option");
+      option.value = name;
+      fragment.appendChild(option);
+    });
+
+    suggestionsContainer.innerHTML = ""; // Clear existing suggestions
+    suggestionsContainer.appendChild(fragment);
   }
 
   #notifySuccess() {

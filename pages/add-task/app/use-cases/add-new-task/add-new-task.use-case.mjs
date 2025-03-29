@@ -1,20 +1,35 @@
-import { DraftTaskRepository } from "../../../ports/draft-task.repository.port.mjs";
 import { AddNewTaskInputDTO } from "./add-new-task.input.dto.mjs";
 
 export class AddNewTaskUseCase {
-  /** @type {TaskRepository} */
+  /**
+   * @private
+   * @readonly
+   * @typedef {import("../../../ports/task.repository.port.mjs").TaskRepository} TaskRepository
+   * @type {TaskRepository} */
   #taskRepository;
 
-  /** @type {DraftTaskRepository} */
+  /**
+   * @private
+   * @readonly
+   * @typedef {import("../../../ports/draft-task.repository.port.mjs").DraftTaskRepository} DraftTaskRepository
+   * @type {DraftTaskRepository} */
   #draftTaskRepository;
+
+  /**
+   * @private
+   * @readonly
+   * @typedef {import("../../../ports/task-names.repository.port.mjs").TaskNamesRepository} TaskNamesRepository
+   * @type {TaskNamesRepository} */
+  #taskNamesRepository;
 
   /**
    * @param {TaskRepository} taskRepository
    * @param {DraftTaskRepository} draftTaskRepository
    */
-  constructor(taskRepository, draftTaskRepository) {
+  constructor(taskRepository, draftTaskRepository, taskNamesRepository) {
     this.#taskRepository = taskRepository;
     this.#draftTaskRepository = draftTaskRepository;
+    this.#taskNamesRepository = taskNamesRepository;
   }
 
   /**
@@ -27,5 +42,6 @@ export class AddNewTaskUseCase {
 
     await this.#taskRepository.insert(newTask);
     await this.#draftTaskRepository.delete();
+    await this.#taskNamesRepository.insert(newTask.name);
   }
 }
