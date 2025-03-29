@@ -1,11 +1,16 @@
 const task = `
   ++localId,
-  id,
+  &id,
   name,
   startedAt,
   endedAt,
   createdAt,
   updatedAt
+`;
+
+const taskNames = `
+   ++localId,
+  &name
 `;
 
 /**
@@ -27,6 +32,7 @@ export class TasksDatabase extends Dexie {
     this.version(1).stores({
       tasks: task,
       draft: task,
+      taskNames,
     });
   }
 }
