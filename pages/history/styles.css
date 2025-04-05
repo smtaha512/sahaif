@@ -1,0 +1,35 @@
+:root {
+  --table-pagination-container-height: 0px;
+  --main-content-height: calc(100vh - (var(--top-nav-height) + var(--bottom-nav-height)));
+  --tr-height: 40px;
+  --thead-height: calc(var(--tr-height) * 1); /*This should be 2 instead of 1 when buttons are added to the header*/ 
+  --table-height: calc(var(--main-content-height) - var(--table-pagination-container-height));
+  --tbody-height: calc(100% - var(--thead-height));
+}
+main {
+  overflow-y: hidden;
+}
+table.table {
+  min-height: calc(var(--tr-height) * 3) /* height of header + at least 1 other row */;
+  height: calc(var(--table-height) - var(--bottom-nav-height) - 2.5rem);
+}
+tbody {
+  top: var(--thead-height);
+  height: var(--tbody-height);
+  overflow-x: auto;
+}
+tbody::-webkit-scrollbar:horizontal {
+  height: 0;
+  width: 0;
+  display: none;
+}
+tbody tr:last-of-type {
+  margin-bottom: 20px;
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  background: white; /* Keep row visible */
+  z-index: 10;
+}

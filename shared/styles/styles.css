@@ -1,0 +1,10 @@
+:root {
+  overflow: hidden;
+  height: 100vh;
+  --top-nav-height: 72px;
+  --bottom-nav-height: 56px;
+}
+
+nav {
+  min-height: 53px;
+}
