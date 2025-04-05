@@ -4,7 +4,7 @@ export class AddNewTaskUseCase {
   /**
    * @private
    * @readonly
-   * @typedef {import("../../../ports/task.repository.port.mjs").TaskRepository} TaskRepository
+   * @typedef {import("../../../ports/tasks.repository.port.mjs").TaskRepository} TaskRepository
    * @type {TaskRepository} */
   #taskRepository;
 

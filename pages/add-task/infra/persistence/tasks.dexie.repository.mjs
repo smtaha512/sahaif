@@ -24,4 +24,12 @@ export class TasksDexieRepository extends TaskRepository {
 
     await this.#datasource.tasks.add(TasksDexieEntity.build(task));
   }
+
+  /**
+   * Retrieves all tasks from the database.
+   * @returns {Promise<Array>} A promise that resolves to an array of tasks.
+   */
+  async findAll() {
+    return await this.#datasource.tasks.orderBy("startedAt").reverse().toArray();
+  }
 }

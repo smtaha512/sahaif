@@ -23,6 +23,18 @@ export class TaskDuration {
     return this.#durationInMilliseconds;
   }
 
+  get durationInFormattedString() {
+    const seconds = (Math.floor((this.#durationInMilliseconds / 1000) % 60) ?? "").toString();
+    const minutes = (Math.floor((this.#durationInMilliseconds / (1000 * 60)) % 60) ?? "").toString();
+    const hours = (Math.floor((this.#durationInMilliseconds / (1000 * 60 * 60)) % 24) ?? "").toString();
+
+    return `${hours.padStart(2, "0")}:${minutes.padStart(2, "0")}:${seconds.padStart(2, "0")}`;
+  }
+
+  toString() {
+    return this.durationInFormattedString;
+  }
+
   /**
    * Factory method to create TaskDuration from start and end timestamps.
    * @param {Date} startedAt - The start time.
