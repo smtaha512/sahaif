@@ -30,7 +30,9 @@ export class FetchHistoryUseCase {
       .flatMap(this.#splitTask)
       .reduce((acc, { date, task }) => ({ ...acc, [date]: [...(acc[date] || []), task] }), {});
 
-    return Object.entries(groupedTasks).toSorted((a, b) => dateFns.compareDesc(new Date(a[0]), new Date(b[0])));
+    return Object.entries(groupedTasks).toSorted(([firstDate], [secondDate]) =>
+      dateFns.compareDesc(new Date(firstDate), new Date(secondDate))
+    );
   }
 
   /**
