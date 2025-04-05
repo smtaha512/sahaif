@@ -10,6 +10,21 @@
   status = 200
 
 [[redirects]]
+  from = "/history"
+  to = "/pages/history/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/history/"
+  to = "/pages/history/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/history/*"
+  to = "/pages/history/:splat"
+  status = 200
+
+[[redirects]]
   from = "/*"
   to = "/pages/add-task/:splat"
   status = 200
