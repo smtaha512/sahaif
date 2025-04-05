@@ -15,7 +15,7 @@ export class TaskRepository {
    * Retrieves all tasks from the repository.
    *
    * @throws {MethodNotImplementedError} Thrown when the method is not implemented.
-   * @returns {Promise<Array>} A promise that resolves to an array of tasks.
+   * @returns {Promise<Array<Task>>} A promise that resolves to an array of tasks.
    */
   findAll() {
     throw new MethodNotImplementedError();

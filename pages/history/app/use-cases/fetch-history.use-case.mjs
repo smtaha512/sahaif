@@ -33,6 +33,13 @@ export class FetchHistoryUseCase {
     return Object.entries(groupedTasks).toSorted((a, b) => dateFns.compareDesc(new Date(a[0]), new Date(b[0])));
   }
 
+  /**
+   * Splits a given task into multiple tasks, each corresponding to a single day.
+   *
+   * @param {Task} task - The task to be split, containing `startedAt` and `endedAt` properties.
+   * @returns {{ date: string, task: Task }[]} An array of objects, each containing a `date` (ISO string)
+   * and a `task` (Task instance) for that specific day.
+   */
   #splitTask(task) {
     const start = dateFns.startOfDay(task.startedAt);
     const end = dateFns.startOfDay(task.endedAt);

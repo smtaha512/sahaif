@@ -27,7 +27,7 @@ export class TasksDexieRepository extends TaskRepository {
 
   /**
    * Retrieves all tasks from the database.
-   * @returns {Promise<Array>} A promise that resolves to an array of tasks.
+   * @returns {Promise<Array<TasksDexieEntity>} A promise that resolves to an array of tasks.
    */
   async findAll() {
     return await this.#datasource.tasks.toArray();
