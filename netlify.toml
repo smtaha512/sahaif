@@ -1,16 +1,6 @@
 [[redirects]]
-  from = "/history"
-  to = "/pages/history/index.html"
-  status = 200
-
-[[redirects]]
-  from = "/history/add-task/*"
-  to = "/pages/add-task/:splat"
-  status = 200
-
-[[redirects]]
-  from = "/history/history/*"
-  to = "/pages/history/:splat"
+  from = "/history/"
+  to = "/pages/history/"
   status = 200
 
 [[redirects]]
@@ -19,16 +9,12 @@
   status = 200
 
 [[redirects]]
-  from = "/"
-  to = "/pages/add-task/index.html"
-  status = 200
-
-[[redirects]]
   from = "/add-task/*"
   to = "/pages/add-task/:splat"
   status = 200
 
 [[redirects]]
-  from = "/*"
-  to = "/pages/add-task/:splat"
+  from = "/"
+  to = "/pages/add-task/index.html"
   status = 200
+
