@@ -1,8 +1,8 @@
 :root {
   --table-pagination-container-height: 0px;
   --main-content-height: calc(100vh - (var(--top-nav-height) + var(--bottom-nav-height)));
-  --tr-height: 40px;
-  --thead-height: calc(var(--tr-height) * 1); /*This should be 2 instead of 1 when buttons are added to the header*/ 
+  --tr-height: 34px;
+  --thead-height: 65px; /* height of dropdown row + height of header */
   --table-height: calc(var(--main-content-height) - var(--table-pagination-container-height));
   --tbody-height: calc(100% - var(--thead-height));
 }
@@ -32,4 +32,8 @@ tbody tr:last-of-type {
   top: 0;
   background: white; /* Keep row visible */
   z-index: 10;
+}
+
+.page-item {
+  width: 70px;
 }

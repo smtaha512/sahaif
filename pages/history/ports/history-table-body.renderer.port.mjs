@@ -1,7 +1,7 @@
 import { MethodNotImplementedError } from "../../../shared/errors/method-not-implemented.error.mjs";
 
 export class HistoryTableBodyRenderer {
-  renderTasks(tasks) {
+  async renderTasks(tasks) {
     throw new MethodNotImplementedError();
   }
 

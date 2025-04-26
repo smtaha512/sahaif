@@ -167,7 +167,7 @@ export class AddTaskDomRenderer extends AddTaskRendererPort {
     } else if (error instanceof EndDateTimeBeforeStartDateTimeError) {
       this.#showAlert(error.message, "danger");
     } else {
-      console.log(error);
+      console.error(error);
 
       this.#showAlert("An unexpected error occurred. Please try again.", "danger");
     }

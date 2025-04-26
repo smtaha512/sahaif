@@ -1,4 +1,5 @@
-import { HistoryTableBodyRenderer } from "../ports/history-table-body.render.port.mjs";
+import { convertDateAndTimeToJSDate } from "../../../../shared/utils/date.utils.mjs";
+import { HistoryTableBodyRenderer } from "../../ports/history-table-body.renderer.port.mjs";
 
 export class HistoryTableBodyDomRenderer extends HistoryTableBodyRenderer {
   /**
@@ -11,13 +12,47 @@ export class HistoryTableBodyDomRenderer extends HistoryTableBodyRenderer {
   /**
    * @private
    * @readonly
-   * @typedef {import("../app/use-cases/fetch-history.use-case.mjs").FetchHistoryUseCase} FetchHistoryUseCase
+   * @typedef {import("../../../app/use-cases/fetch-history.use-case.mjs").FetchHistoryUseCase} FetchHistoryUseCase
    * @type {FetchHistoryUseCase}
    **/
   #fetchHistoryUseCase = null;
-  constructor(fetchHistoryUseCase) {
+
+  /**
+   * @private
+   * @readonly
+   * @typedef {import("../../../app/use-cases/fetch-latest-task.use-case.mjs").FetchLatestTaskUseCase} FetchLatestTaskUseCase
+   * @type {FetchLatestTaskUseCase}
+   **/
+  fetchLatestTaskUseCase;
+
+  /**
+   * @private
+   * @readonly
+   * @typedef {import("../../spinner.renderer.mjs").SpinnerRenderer} SpinnerRenderer
+   * @type {SpinnerRenderer}
+   **/
+  #spinnerRenderer;
+
+  /**
+   * @private
+   * @readonly
+   * @typedef {import("../../url.renderer.mjs").UrlRenderer} UrlRenderer
+   * @type {UrlRenderer}
+   **/
+  #urlRenderer;
+
+  /**
+   * @param {FetchHistoryUseCase} fetchHistoryUseCase
+   * @param {FetchLatestTaskUseCase} fetchLatestTaskUseCase
+   * @param {SpinnerRenderer} spinnerRenderer
+   * @param {UrlRenderer} urlRenderer
+   */
+  constructor(fetchHistoryUseCase, fetchLatestTaskUseCase, spinnerRenderer, urlRenderer) {
     super();
     this.#fetchHistoryUseCase = fetchHistoryUseCase;
+    this.fetchLatestTaskUseCase = fetchLatestTaskUseCase;
+    this.#spinnerRenderer = spinnerRenderer;
+    this.#urlRenderer = urlRenderer;
     this.taskTableBody = document.getElementById(this.#taskTableBodyId);
     this.renderTasks();
   }
@@ -26,7 +61,14 @@ export class HistoryTableBodyDomRenderer extends HistoryTableBodyRenderer {
    * Renders the tasks into the table body efficiently.
    */
   async renderTasks() {
-    const groupedTasks = await this.#fetchHistoryUseCase.execute();
+    this.#spinnerRenderer.showSpinner();
+    let { startedAt, endedAt } = this.#urlRenderer.getCurrentQueryParams();
+
+    startedAt = startedAt && dateFns.startOfDay(convertDateAndTimeToJSDate(startedAt));
+    endedAt = endedAt && dateFns.endOfDay(convertDateAndTimeToJSDate(endedAt));
+
+    const groupedTasks = await this.#fetchHistoryUseCase.execute(startedAt, endedAt);
+
     const fragment = document.createDocumentFragment();
 
     if (groupedTasks.length === 0) {
@@ -44,6 +86,44 @@ export class HistoryTableBodyDomRenderer extends HistoryTableBodyRenderer {
     this.taskTableBody.appendChild(fragment);
 
     this.#addStickyRowListener();
+    this.#spinnerRenderer.hideSpinner();
+  }
+
+  updateNavigationButtons() {
+    const previousButton = document.getElementById("previous-page");
+    const nextButton = document.getElementById("next-page");
+
+    previousButton.addEventListener("click", async () => {
+      // update query params if there is no query param in the url fallback to 1 otherwise increment and set the new query param
+
+      updatePage("previous");
+      const currentPage = getCurrentPage();
+      await this.renderTasks();
+
+      if (currentPage === 1) {
+        previousButton.classList.add("disabled");
+      }
+      if (currentPage > 1) {
+        previousButton.classList.remove("disabled");
+      }
+    });
+
+    nextButton.addEventListener("click", async () => {
+      updatePage("next");
+      await this.renderTasks();
+    });
+
+    // if (this.#fetchHistoryUseCase.hasPreviousPage()) {
+    //   previousButton.classList.remove("disabled");
+    // } else {
+    //   previousButton.classList.add("disabled");
+    // }
+
+    // if (this.#fetchHistoryUseCase.hasNextPage()) {
+    //   nextButton.classList.remove("disabled");
+    // } else {
+    //   nextButton.classList.add("disabled");
+    // }
   }
 
   #renderTask(fragment) {
