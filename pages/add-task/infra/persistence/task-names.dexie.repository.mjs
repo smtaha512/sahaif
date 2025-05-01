@@ -30,8 +30,6 @@ export class TaskNamesDexieRepository extends TaskNamesRepository {
    */
   async insert(name) {
     try {
-      console.log(this.#datasource.taskNames);
-
       await this.#datasource.taskNames.add({ name, createdAt: new Date(), updatedAt: new Date() });
     } catch (error) {
       if (error.name !== "ConstraintError") {
@@ -41,11 +39,40 @@ export class TaskNamesDexieRepository extends TaskNamesRepository {
   }
 
   /**
+   * Inserts multiple task names into the taskNames store
+   * @param {string[]} names
+   */
+  async insertMany(names) {
+    const taskNamesToInsert = [...new Set(names)].map((name) => ({
+      name,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }));
+    try {
+      await this.#datasource.taskNames.bulkAdd(taskNamesToInsert);
+    } catch (error) {
+      if (error.name !== "ConstraintError") {
+        console.error("Failed to insert task names:", error);
+      }
+    }
+  }
+
+  /**
+   * Deletes all task names from the taskNames store
+   */
+  async delete() {
+    try {
+      await this.#datasource.taskNames.clear();
+    } catch (error) {
+      console.error("Failed to delete task names:", error);
+    }
+  }
+
+  /**
    * Retrieves all task names in sorted order
    * @returns {Promise<string[]>}
    */
   async findAllSorted() {
-    console.log(await this.#datasource.taskNames.orderBy("name").keys());
     return this.#datasource.taskNames.orderBy("name").keys();
   }
 }

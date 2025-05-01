@@ -26,6 +26,10 @@ export class Task {
    * @returns {TaskDuration} The duration in milliseconds, or 0 if the duration is invalid.
    */
   get duration() {
+    if (!this.startedAt || !this.endedAt) {
+      return TaskDuration.fromTimestamps(new Date(0), new Date(0));
+    }
+
     return TaskDuration.fromTimestamps(this.startedAt, this.endedAt);
   }
 }

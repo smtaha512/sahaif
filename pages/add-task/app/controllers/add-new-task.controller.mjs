@@ -1,3 +1,4 @@
+import { FetchTaskNamesUseCase } from "../../../../app/use-cases/fetch-task-names.use-case.mjs";
 import { TasksDatabase } from "../../../../core/infra/persistence/datasource.mjs";
 import { setCssVariables } from "../../../../shared/utils/set-css-variables.mjs";
 import { AddTaskDomRenderer } from "../../adapters/add-task.dom.renderer.mjs";
@@ -25,5 +26,6 @@ async function initializeAddTaskApplication() {
   const addTaskUseCase = new AddNewTaskUseCase(tasksRepository, draftTasksRepository, taskNamesRepository);
   const loadDraftTaskUseCase = new LoadDraftTaskUseCase(draftTasksRepository);
   const saveDraftTaskUseCase = new SaveDraftTaskUseCase(draftTasksRepository);
-  new AddTaskDomRenderer(addTaskUseCase, loadDraftTaskUseCase, saveDraftTaskUseCase, taskNamesRepository);
+  const fetchTaskNamesUseCase = new FetchTaskNamesUseCase(taskNamesRepository);
+  new AddTaskDomRenderer(addTaskUseCase, loadDraftTaskUseCase, saveDraftTaskUseCase, fetchTaskNamesUseCase);
 }

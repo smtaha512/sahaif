@@ -38,8 +38,8 @@ export class DraftTaskDexieRepository extends DraftTaskRepository {
   }
 
   /**
-   * Deletes a task from the database.
-   * @returns {Promise<void>} A promise that resolves when the task is deleted.
+   * Deletes all drafts from the database.
+   * @returns {Promise<void>} A promise that resolves when the drafts are deleted.
    */
   async delete() {
     await this.#datasource.draft.clear();

@@ -16,6 +16,23 @@ export class TaskNamesRepository {
   }
 
   /**
+   * Inserts multiple task names into the repository.
+   * @param {string[]} names The task names to insert.
+   * @returns {Promise<void>}
+   */
+  insertMany(names) {
+    throw new MethodNotImplementedError();
+  }
+
+  /**
+   * Deletes all task names from the repository.
+   * @returns {Promise<void>}
+   */
+  delete() {
+    throw new MethodNotImplementedError();
+  }
+
+  /**
    * Retrieves all task names in sorted order.
    * @returns {Promise<string[]>} A promise that resolves to a sorted list of task names.
    */
