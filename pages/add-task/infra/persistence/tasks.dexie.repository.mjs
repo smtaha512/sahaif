@@ -93,28 +93,4 @@ export class TasksDexieRepository extends TaskRepository {
   async count() {
     return await this.#datasource.tasks.count();
   }
-
-  // Use cursor to stream data
-  /**
-   * Streams tasks from the database.
-   * @param {function} callback - A callback function to process each task.
-   * @returns {Promise<void>} A promise that resolves when all tasks have been processed.
-   */
-  async stream(callback) {
-    return new Promise(
-      (resolve, reject) =>
-        this.#datasource.tasks
-          .orderBy("startedAt")
-          .reverse()
-          .limit(10)
-          .each((task) => callback(task))
-          .then(resolve)
-          .catch(reject)
-      //   this.#datasource.tasks.
-      // .cursor
-      // .each((task) => callback(task))
-      // .then(resolve)
-      // .catch(reject)
-    );
-  }
 }
