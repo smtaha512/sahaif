@@ -1,7 +1,9 @@
+import { FetchTaskNamesUseCase } from "../../../../app/use-cases/fetch-task-names.use-case.mjs";
 import { TasksDatabase } from "../../../../core/infra/persistence/datasource.mjs";
 import { setCssVariables } from "../../../../shared/utils/set-css-variables.mjs";
 import { TaskNamesDexieRepository } from "../../../add-task/infra/persistence/task-names.dexie.repository.mjs";
 import { TasksDexieRepository } from "../../../add-task/infra/persistence/tasks.dexie.repository.mjs";
+import { BackupTasksToFileRenderer } from "../../adapters/backup-tasks-to-file/backup-tasks-to-file.renderer.mjs";
 import { FileReaderAdapter } from "../../adapters/file-reader.adapter.mjs";
 import { HistoryTableBodyDomRenderer } from "../../adapters/history-table/history-table-body.dom.renderer.mjs";
 import { HistoryTableNavigationButtonsDomRenderer } from "../../adapters/history-table/history-table-navigation-button.dom.renderer.mjs";
@@ -9,7 +11,10 @@ import { RestoreTasksFromFileRenderer } from "../../adapters/restore-tasks-from-
 import { SpinnerRenderer } from "../../adapters/spinner.renderer.mjs";
 import { UrlRenderer } from "../../adapters/url.renderer.mjs";
 import { TaskMapper } from "../../domain/task-mapper.mjs";
-import { ParserFactory } from "../../parsers/parser.factory.mjs";
+import { XlsxWriter } from "../infra/file-writers/xlsx.writer.mjs";
+import { ParserFactory } from "../infra/parsers/parser.factory.mjs";
+import { ExportTasksUseToXlsxUseCase } from "../use-cases/export-tasks-use-to-xlsx.use-case.mjs";
+import { FetchAllTasksUseCase } from "../use-cases/fetch-all-tasks.use-case.mjs";
 import { FetchHistoryUseCase } from "../use-cases/fetch-history.use-case.mjs";
 import { FetchLatestTaskUseCase } from "../use-cases/fetch-latest-task.use-case.mjs";
 import { HasAlreadyExistingTasksUseCase } from "../use-cases/has-already-existing-tasks.use-case.mjs";
@@ -42,6 +47,7 @@ async function initializeHistoryApplication() {
     spinnerRenderer,
     urlRenderer
   );
+
   new RestoreTasksFromFileRenderer(
     restoreTasksUseCase,
     hasAlreadyExistingTasksUseCase,
@@ -50,5 +56,15 @@ async function initializeHistoryApplication() {
     historyTableBodyDomRenderer,
     spinnerRenderer
   );
+
+  new BackupTasksToFileRenderer(
+    new ExportTasksUseToXlsxUseCase(
+      new FetchAllTasksUseCase(tasksRepository),
+      new FetchTaskNamesUseCase(taskNamesRepository),
+      new XlsxWriter()
+    ),
+    spinnerRenderer
+  );
+
   new HistoryTableNavigationButtonsDomRenderer(fetchLatestTaskUseCase, urlRenderer, historyTableBodyDomRenderer);
 }

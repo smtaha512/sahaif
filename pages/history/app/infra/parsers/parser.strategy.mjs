@@ -1,4 +1,4 @@
-import { MethodNotImplementedError } from "../../../shared/errors/method-not-implemented.error.mjs";
+import { MethodNotImplementedError } from "../../../../../shared/errors/method-not-implemented.error.mjs";
 
 export class ParserStrategy {
   constructor(mapper) {

@@ -34,7 +34,6 @@ export class FetchHistoryUseCase {
    * and an array of task objects associated with that date.
    */
   async execute(startedAt = null, endedAt = null) {
-    debugger;
     if (startedAt && endedAt) {
       // parse the dates
       startedAt = convertDateAndTimeToJSDate(startedAt);

@@ -1,4 +1,4 @@
-import { ParserStrategyNotImplementedError } from "../../parsers/errors/parser-strategy-not-implemented.error.mjs";
+import { ParserStrategyNotImplementedError } from "../../app/infra/parsers/errors/parser-strategy-not-implemented.error.mjs";
 import { NoFileSelectedError } from "../errors/no-file-selected.error.mjs";
 import { ConfirmRestoreTasksModalRenderer } from "./confirm-restore-tasks-modal.renderer.mjs";
 
@@ -73,16 +73,16 @@ export class RestoreTasksFromFileRenderer {
     this.#parserFactory = parserFactory;
     this.#historyTableBodyRenderer = historyTableBodyRenderer;
     this.#spinnerRenderer = spinnerRenderer;
-    this.#registerImportHistoryEventHandler();
+    this.#registerRestoreHistoryEventHandler();
   }
 
-  #registerImportHistoryEventHandler() {
-    const importHistoryInput = document.getElementById("restore-tasks");
+  #registerRestoreHistoryEventHandler() {
+    const restoreHistoryInput = document.getElementById("restore-tasks");
 
-    importHistoryInput.addEventListener("change", async (event) => {
+    restoreHistoryInput.addEventListener("change", async (event) => {
       try {
-        this.#spinnerRenderer.showSpinner("Importing tasks...");
-        await this.#importTasks(event.target.files[0]);
+        this.#spinnerRenderer.showSpinner({ message: "Importing tasks..." });
+        await this.#restoreTasks(event.target.files[0]);
 
         event.target.value = null;
       } catch (error) {
@@ -97,7 +97,7 @@ export class RestoreTasksFromFileRenderer {
    * @param {File} [file=null]
    * @param {number} [alreadyExistingTasksCount=0]
    */
-  async #importTasks(file = null) {
+  async #restoreTasks(file = null) {
     if (!file) {
       throw new NoFileSelectedError();
     }
@@ -140,16 +140,16 @@ export class RestoreTasksFromFileRenderer {
     const hasAlreadyExistingTasks = await this.#hasAlreadyExistingTasksUseCase.execute();
 
     if (hasAlreadyExistingTasks) {
-      new ConfirmRestoreTasksModalRenderer().setupModal(() => this.#importTasksAndRerender(tasks)).show();
+      new ConfirmRestoreTasksModalRenderer().setupModal(() => this.#restoreTasksAndRerender(tasks)).show();
     } else {
-      this.#importTasksAndRerender(tasks);
+      this.#restoreTasksAndRerender(tasks);
     }
   }
 
   /**
    * @param {Task[]} tasks
    */
-  async #importTasksAndRerender(tasks) {
+  async #restoreTasksAndRerender(tasks) {
     try {
       await this.#restoreTasksUseCase.execute(tasks);
       await this.#historyTableBodyRenderer.renderTasks();

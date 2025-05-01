@@ -28,7 +28,7 @@ export class HistoryTableBodyDomRenderer extends HistoryTableBodyRenderer {
   /**
    * @private
    * @readonly
-   * @typedef {import("../../spinner.renderer.mjs").SpinnerRenderer} SpinnerRenderer
+   * @typedef {import("../spinner.renderer.mjs").SpinnerRenderer} SpinnerRenderer
    * @type {SpinnerRenderer}
    **/
   #spinnerRenderer;
@@ -61,7 +61,7 @@ export class HistoryTableBodyDomRenderer extends HistoryTableBodyRenderer {
    * Renders the tasks into the table body efficiently.
    */
   async renderTasks() {
-    this.#spinnerRenderer.showSpinner();
+    this.#spinnerRenderer.showSpinner({ message: "Loading tasks" });
     let { startedAt, endedAt } = this.#urlRenderer.getCurrentQueryParams();
 
     startedAt = startedAt && dateFns.startOfDay(convertDateAndTimeToJSDate(startedAt));

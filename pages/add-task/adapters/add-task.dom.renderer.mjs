@@ -39,10 +39,10 @@ export class AddTaskDomRenderer extends AddTaskRendererPort {
   /**
    * @private
    * @readonly
-   * @typedef {import("../ports/task-names.repository.port.mjs").TaskNamesRepository} TaskNamesRepository
-   * @type {TaskNamesRepository}
+   * @typedef {import("../../../app/use-cases/fetch-task-names.use-case.mjs").FetchTaskNamesUseCase} FetchTaskNamesUseCase
+   * @type {FetchTaskNamesUseCase}
    **/
-  #taskNamesRepository = null;
+  #fetchTaskNamesUseCase = null;
 
   /**
    * @private
@@ -55,12 +55,12 @@ export class AddTaskDomRenderer extends AddTaskRendererPort {
    * @param {AddNewTaskUseCase} addNewTaskUseCase
    * @param {DraftTaskRepository} draftTaskRepository
    */
-  constructor(addNewTaskUseCase, loadDraftTaskUseCase, saveDraftTaskUseCase, taskNamesRepository) {
+  constructor(addNewTaskUseCase, loadDraftTaskUseCase, saveDraftTaskUseCase, fetchTaskNamesUseCase) {
     super();
     this.#addNewTaskUseCase = addNewTaskUseCase;
     this.#loadDraftTaskUseCase = loadDraftTaskUseCase;
     this.#saveDraftTaskUseCase = saveDraftTaskUseCase;
-    this.#taskNamesRepository = taskNamesRepository;
+    this.#fetchTaskNamesUseCase = fetchTaskNamesUseCase;
     this.#initializeForm();
   }
 
@@ -132,7 +132,7 @@ export class AddTaskDomRenderer extends AddTaskRendererPort {
   }
 
   async #populateTaskSuggestions() {
-    const suggestions = await this.#taskNamesRepository.findAllSorted();
+    const suggestions = await this.#fetchTaskNamesUseCase.sortedByName();
 
     if (!Array.isArray(suggestions) || suggestions?.length === 0) {
       return;

@@ -6,7 +6,7 @@ export class TaskMapper {
    * @param {RestoredTaskInputDto} RestoredTaskInputDto
    */
 
-  map({ task, startedAt, endedAt, date }) {
+  fromBackup({ task, startedAt, endedAt, date }) {
     return RestoredTaskInputDto.build({
       endDate: date,
       endTime: endedAt,
